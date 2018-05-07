@@ -19,9 +19,11 @@ func ReloadItem(item *model.Item) (*model.Item, error) {
 		return nil, errors.New("item type " + item.Type + " is not supported")
 	}
 }
+
 func ReloadSerie(item *model.Item) (*model.Item, error) {
 	return nil, nil
 }
+
 func ReloadMovie(item *model.Item) (*model.Item, error) {
 	fmt.Println("removing all episodes for item " + item.Id.Hex())
 	err := dao.RemoveEpisodesByItemId(item.Id.Hex())
