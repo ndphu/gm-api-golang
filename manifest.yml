@@ -1,0 +1,8 @@
+---
+applications:
+- name: gm-api-golang
+  memory: 16M
+  instances: 2
+  command: gm-api-golang
+  random-route: true
+
