@@ -30,7 +30,7 @@ func ReloadMovie(item *model.Item) (*model.Item, error) {
 		return nil, err
 	}
 	fmt.Println("crawling from play url " + item.PlayUrl)
-	videoSource, srt, err := CrawVideoSourceMQTT(item.PlayUrl)
+	videoSource, srt, err := CrawVideoSource(item.PlayUrl)
 	episode := model.Episode{
 		Id: bson.NewObjectId(),
 		Title: item.Title,

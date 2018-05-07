@@ -17,7 +17,7 @@ func EpisodeController(g *gin.RouterGroup) {
 			c.JSON(500, gin.H{"err": err})
 			return
 		}
-		videoSource, srt, err := service.CrawVideoSourceMQTT(e.CrawUrl)
+		videoSource, srt, err := service.CrawVideoSource(e.CrawUrl)
 		if err != nil {
 			fmt.Printf("episode reloaded failed error = %v\n", err)
 			c.JSON(500, gin.H{"err": err})

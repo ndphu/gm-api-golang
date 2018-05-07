@@ -5,13 +5,16 @@ import (
 	"encoding/json"
 	"net/url"
 	"strings"
+	"fmt"
 )
 
 type Config struct {
-	IsLocal bool
-	MongoDBUri string
-	DBName string
-	MQTTBroker string
+	MongoDBUri            string
+	DBName                string
+	MQTTBroker            string
+	CrawlerServiceBaseUrl string
+	GinDebug              bool
+	UseMQTT bool
 }
 
 type VcapServices struct {
@@ -34,21 +37,36 @@ func init() {
 	c := Config{}
 	vcapServices := os.Getenv(VCAPSERVICES)
 	if vcapServices == "" {
-		c.IsLocal = true
 		c.MongoDBUri = os.Getenv("MONGODB_URI")
 	} else {
-		c.IsLocal = false
 		c.MongoDBUri = getMongoDBUri(vcapServices)
 	}
 	c.DBName = getDBName(c.MongoDBUri)
 
-	broker:= os.Getenv("MQTT_BROKER")
-	if broker == "" {
-		c.MQTTBroker = "tcp://iot.eclipse.org:1883"
+	ginDebug := os.Getenv("GIN_DEBUG")
+	if ginDebug == "true" {
+		c.GinDebug = true
 	} else {
-		c.MQTTBroker = broker
+		c.GinDebug = false
 	}
 
+	useMQTT := os.Getenv("USE_MQTT")
+	if useMQTT == "true" {
+		c.UseMQTT = true
+		broker:= os.Getenv("MQTT_BROKER")
+		if broker == "" {
+			c.MQTTBroker = "tcp://iot.eclipse.org:1883"
+		} else {
+			c.MQTTBroker = broker
+		}
+	} else {
+		c.UseMQTT = false
+		c.CrawlerServiceBaseUrl = os.Getenv("CRAW_SERVICE_BASE_URL")
+		if c.CrawlerServiceBaseUrl == "" {
+			panic("should set CRAW_SERVICE_BASE_URL")
+		}
+		fmt.Println("using craw service " + c.CrawlerServiceBaseUrl)
+	}
 	conf = &c
 }
 

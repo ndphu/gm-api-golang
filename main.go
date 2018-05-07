@@ -1,17 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/ndphu/gm-api-golang/controller"
+	"github.com/ndphu/gm-api-golang/config"
+	"fmt"
 )
 
 func main() {
+	if config.Get().GinDebug == true {
+		gin.SetMode(gin.DebugMode)
+	} else {
+		gin.SetMode(gin.ReleaseMode)
+	}
 	r := gin.Default()
 	setupCORS(r)
 	initControllers(r.Group("/api"))
-	fmt.Println("starting server")
 	r.Run()
 }
 func initControllers(g *gin.RouterGroup) {
@@ -19,6 +24,7 @@ func initControllers(g *gin.RouterGroup) {
 	controller.GenresController(g.Group("/genre"))
 	controller.ItemController(g.Group("/item"))
 	controller.EpisodeController(g.Group("/episode"))
+	fmt.Println("controllers initialized")
 }
 func setupCORS(r *gin.Engine) {
 	c := cors.DefaultConfig()

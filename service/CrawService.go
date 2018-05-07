@@ -7,6 +7,9 @@ import (
 	MQTT "github.com/eclipse/paho.mqtt.golang"
 	"errors"
 	"github.com/ndphu/gm-api-golang/config"
+	"net/http"
+	"bytes"
+	"io/ioutil"
 )
 
 type CrawRequest struct {
@@ -21,6 +24,14 @@ type RequestItem struct {
 	Result   string `json:"result"`
 	SubTitle string `json:"subTitle"`
 	Error    string `json:"error"`
+}
+
+func CrawVideoSource(playUrl string) (videoSource string, srt string, err error) {
+	if config.Get().UseMQTT == true {
+		return CrawVideoSourceMQTT(playUrl)
+	} else {
+		return CrawServiceHttp(playUrl)
+	}
 }
 
 func CrawVideoSourceMQTT(playUrl string) (videoSource string, srt string, err error) {
@@ -82,6 +93,38 @@ func CrawVideoSourceMQTT(playUrl string) (videoSource string, srt string, err er
 	} else {
 		return res[0].Result, res[0].SubTitle, nil
 	}
+}
+
+func CrawServiceHttp(playUrl string)  (videoSource string, srt string, err error) {
+	reqId := fmt.Sprintf("%d", time.Now().UnixNano())
+	items := []RequestItem{{
+		Id:    reqId,
+		Input: playUrl,
+	}}
+	jsonBuffer, err := json.Marshal(items)
+	if err != nil {
+		return "", "", err
+	}
+
+	resp,err:=http.Post(config.Get().CrawlerServiceBaseUrl + "/api/craw",
+		"application/json",
+		bytes.NewBuffer(jsonBuffer))
+	if err != nil {
+		return "", "", err
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return "", "", err
+	}
+
+	var respItems []RequestItem
+	err =json.Unmarshal(body, &respItems)
+	if err != nil {
+		return "", "", err
+	}
+
+	return respItems[0].Result, respItems[0].SubTitle, nil
 }
 
 func publishMessage(reqTopic string, client MQTT.Client, jsonBuffer []byte) {

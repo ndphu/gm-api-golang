@@ -22,7 +22,7 @@ func init() () {
 		fmt.Println("fail to connect to database")
 		panic(err)
 	} else {
-		fmt.Println("connected!")
+		fmt.Println("database connected!")
 	}
 
 	dbName := ""
