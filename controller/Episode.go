@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"gm-api-golang/dao"
-	"gm-api-golang/service"
 	"fmt"
+	"github.com/ndphu/gm-api-golang/dao"
+	"github.com/ndphu/gm-api-golang/service"
 )
 
 func EpisodeController(g *gin.RouterGroup) {

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"encoding/json"
 	MQTT "github.com/eclipse/paho.mqtt.golang"
-	"gm-api-golang/config"
 	"errors"
+	"github.com/ndphu/gm-api-golang/config"
 )
 
 type CrawRequest struct {

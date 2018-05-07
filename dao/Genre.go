@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"gm-api-golang/model"
 	"github.com/globalsign/mgo/bson"
+	"github.com/ndphu/gm-api-golang/model"
 )
 
 func FindGenreById(id string) (*model.Genre, error) {

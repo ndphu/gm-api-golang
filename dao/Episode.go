@@ -1,9 +1,9 @@
 package dao
 
 import (
-	"gm-api-golang/model"
 	"github.com/globalsign/mgo/bson"
 	"github.com/globalsign/mgo"
+	"github.com/ndphu/gm-api-golang/model"
 )
 
 func FindEpisodeById(id string) (*model.Episode, error) {

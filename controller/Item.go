@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"gm-api-golang/dao"
 	"fmt"
-	"gm-api-golang/service"
+	"github.com/ndphu/gm-api-golang/dao"
+	"github.com/ndphu/gm-api-golang/service"
 )
 
 func ItemController(g *gin.RouterGroup) {

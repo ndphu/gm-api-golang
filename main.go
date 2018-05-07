@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"gm-api-golang/controller"
+	"github.com/ndphu/gm-api-golang/controller"
 )
 
 func main() {

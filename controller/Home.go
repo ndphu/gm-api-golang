@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"gm-api-golang/dao"
-	"gm-api-golang/model"
 	"sync"
+	"github.com/ndphu/gm-api-golang/model"
+	"github.com/ndphu/gm-api-golang/dao"
 )
 
 type Section struct {

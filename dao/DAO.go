@@ -2,8 +2,8 @@ package dao
 
 import (
 	"fmt"
-	"gm-api-golang/config"
 	"github.com/globalsign/mgo"
+	"github.com/ndphu/gm-api-golang/config"
 )
 
 type DAO struct {

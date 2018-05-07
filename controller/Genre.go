@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"gm-api-golang/dao"
-	"gm-api-golang/model"
 	"fmt"
+	"github.com/ndphu/gm-api-golang/model"
+	"github.com/ndphu/gm-api-golang/dao"
 )
 
 func GenresController(g *gin.RouterGroup) {
