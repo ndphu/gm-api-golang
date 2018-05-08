@@ -25,6 +25,7 @@ func initControllers(g *gin.RouterGroup) {
 	controller.ItemController(g.Group("/item"))
 	controller.EpisodeController(g.Group("/episode"))
 	controller.SearchController(g.Group("/search"))
+	controller.ActorController(g.Group("/actor"))
 	fmt.Println("controllers initialized")
 }
 func setupCORS(r *gin.Engine) {

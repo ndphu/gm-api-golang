@@ -30,12 +30,16 @@ func SearchActors(searchString string, page int, size int) (map[string]interface
 	if err != nil {
 		return nil, err
 	}
-	var items []model.Item
-	err = query.Skip((page - 1) * size).Limit(size).All(&items)
+	var actors []model.Actor
+	err = query.Skip((page - 1) * size).Limit(size).All(&actors)
 	if err != nil {
 		return nil, err
 	}
-	return buildResult(items, total, size, page), err
+	if actors == nil {
+		return emptyResult(), err
+	} else {
+		return buildResult(actors, total, size, page), err
+	}
 }
 
 func searchItems(search bson.M, page int, size int) (map[string]interface{}, error) {
@@ -49,13 +53,24 @@ func searchItems(search bson.M, page int, size int) (map[string]interface{}, err
 	if err != nil {
 		return nil, err
 	}
-	return buildResult(items, total, size, page), err
+	if items == nil {
+		return emptyResult(), err
+	} else {
+		return buildResult(items, total, size, page), err
+	}
 }
 
-func buildResult(items []model.Item, total int, size int, page int) map[string]interface{} {
-	if items == nil {
-		items = make([]model.Item, 0)
-	}
+func emptyResult() map[string]interface{} {
+	result := make(map[string]interface{})
+	result["docs"] = make([]model.Item, 0)
+	result["total"] = 0
+	result["limit"] = 0
+	result["page"] = 0
+	result["pages"] = 0
+	return result
+}
+
+func buildResult(items interface{}, total int, size int, page int) map[string]interface{} {
 	result := make(map[string]interface{})
 	result["docs"] = items
 	result["total"] = total

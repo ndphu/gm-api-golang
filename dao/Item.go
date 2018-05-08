@@ -49,3 +49,25 @@ func FindItemsByGenre(genreTitle string, page int, size int) (bson.M, error) {
 		"pages": pages,
 	}, nil
 }
+
+func FindItemsByActor(actorTitle string, page int, size int) (bson.M, error) {
+	var items []model.Item
+	query := ItemsCollection().Find(bson.M{
+		"actors": actorTitle,
+	}).Sort("-createdAt")
+
+	total, err := query.Count()
+	if err != nil {
+		return nil, err
+	}
+	pages := total/size + 1
+
+	query.Skip((page - 1) * size).Limit(size).All(&items)
+	return bson.M{
+		"docs":  items,
+		"total": total,
+		"limit": size,
+		"page":  page,
+		"pages": pages,
+	}, nil
+}
