@@ -15,7 +15,7 @@ var (
 	dao *DAO = nil
 )
 
-func init() () {
+func init() {
 	conf := config.Get()
 	ses, err := mgo.Dial(conf.MongoDBUri)
 	if err != nil {
@@ -50,6 +50,6 @@ func init() () {
 	}
 }
 
-func Collection(name string)  *mgo.Collection {
+func Collection(name string) *mgo.Collection {
 	return dao.Session.DB(dao.DBName).C(name)
 }

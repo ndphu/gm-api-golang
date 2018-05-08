@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"github.com/globalsign/mgo/bson"
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/ndphu/gm-api-golang/model"
 )
 
@@ -34,18 +34,18 @@ func FindItemsByGenre(genreTitle string, page int, size int) (bson.M, error) {
 		"genres": genreTitle,
 	}).Sort("-createdAt")
 
-	total, err:= query.Count()
+	total, err := query.Count()
 	if err != nil {
 		return nil, err
 	}
-	pages := total / size + 1
+	pages := total/size + 1
 
 	query.Skip((page - 1) * size).Limit(size).All(&items)
-	return bson.M {
-		"docs": items,
+	return bson.M{
+		"docs":  items,
 		"total": total,
 		"limit": size,
-		"page": page,
+		"page":  page,
 		"pages": pages,
 	}, nil
 }

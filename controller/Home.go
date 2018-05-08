@@ -2,9 +2,9 @@ package controller
 
 import (
 	"github.com/gin-gonic/gin"
-	"sync"
-	"github.com/ndphu/gm-api-golang/model"
 	"github.com/ndphu/gm-api-golang/dao"
+	"github.com/ndphu/gm-api-golang/model"
+	"sync"
 )
 
 type Section struct {
@@ -42,7 +42,7 @@ func HomeController(g *gin.RouterGroup) {
 
 func getLatestMovies() (Section, error) {
 	var items []model.Item
-	items, err:= dao.FindLatestMovies()
+	items, err := dao.FindLatestMovies()
 	return Section{
 		Category: model.Genre{
 			Key:   "latest-movies",
@@ -54,7 +54,7 @@ func getLatestMovies() (Section, error) {
 
 func getLatestSeries() (Section, error) {
 	var items []model.Item
-	items, err:= dao.FindLatestSeries()
+	items, err := dao.FindLatestSeries()
 	return Section{
 		Category: model.Genre{
 			Key:   "latest-series",

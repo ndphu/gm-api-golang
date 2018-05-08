@@ -1,12 +1,12 @@
 package service
 
 import (
-	"fmt"
 	"errors"
-	"github.com/globalsign/mgo/bson"
+	"fmt"
 	"github.com/globalsign/mgo"
-	"github.com/ndphu/gm-api-golang/model"
+	"github.com/globalsign/mgo/bson"
 	"github.com/ndphu/gm-api-golang/dao"
+	"github.com/ndphu/gm-api-golang/model"
 )
 
 func ReloadItem(item *model.Item) (*model.Item, error) {
@@ -34,13 +34,13 @@ func ReloadMovie(item *model.Item) (*model.Item, error) {
 	fmt.Println("crawling from play url " + item.PlayUrl)
 	videoSource, srt, err := CrawVideoSource(item.PlayUrl)
 	episode := model.Episode{
-		Id: bson.NewObjectId(),
-		Title: item.Title,
-		SubTitle: item.SubTitle,
-		CrawUrl: item.PlayUrl,
-		ItemId: item.Id.Hex(),
-		Order: 0,
-		Srt: srt,
+		Id:          bson.NewObjectId(),
+		Title:       item.Title,
+		SubTitle:    item.SubTitle,
+		CrawUrl:     item.PlayUrl,
+		ItemId:      item.Id.Hex(),
+		Order:       0,
+		Srt:         srt,
 		VideoSource: videoSource,
 	}
 	err = dao.SaveEpisode(&episode)

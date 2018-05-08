@@ -1,22 +1,21 @@
 package service
 
 import (
-	"time"
-	"fmt"
-	"encoding/json"
-	MQTT "github.com/eclipse/paho.mqtt.golang"
-	"errors"
-	"github.com/ndphu/gm-api-golang/config"
-	"net/http"
 	"bytes"
+	"encoding/json"
+	"errors"
+	"fmt"
+	MQTT "github.com/eclipse/paho.mqtt.golang"
+	"github.com/ndphu/gm-api-golang/config"
 	"io/ioutil"
+	"net/http"
+	"time"
 )
 
 type CrawRequest struct {
-	ResponseTo string `json:"responseTo"`
-	Items []RequestItem `json:"items"`
-} 
-
+	ResponseTo string        `json:"responseTo"`
+	Items      []RequestItem `json:"items"`
+}
 
 type RequestItem struct {
 	Id       string `json:"id"`
@@ -85,7 +84,7 @@ func CrawVideoSourceMQTT(playUrl string) (videoSource string, srt string, err er
 		syncChan <- 1
 	}()
 
-	<- syncChan
+	<-syncChan
 
 	if err != nil {
 		fmt.Println("failed to craw video source via mqtt. err = " + err.Error())
@@ -95,7 +94,7 @@ func CrawVideoSourceMQTT(playUrl string) (videoSource string, srt string, err er
 	}
 }
 
-func CrawServiceHttp(playUrl string)  (videoSource string, srt string, err error) {
+func CrawServiceHttp(playUrl string) (videoSource string, srt string, err error) {
 	reqId := fmt.Sprintf("%d", time.Now().UnixNano())
 	items := []RequestItem{{
 		Id:    reqId,
@@ -106,7 +105,7 @@ func CrawServiceHttp(playUrl string)  (videoSource string, srt string, err error
 		return "", "", err
 	}
 
-	resp,err:=http.Post(config.Get().CrawlerServiceBaseUrl + "/api/craw",
+	resp, err := http.Post(config.Get().CrawlerServiceBaseUrl+"/api/craw",
 		"application/json",
 		bytes.NewBuffer(jsonBuffer))
 	if err != nil {
@@ -119,7 +118,7 @@ func CrawServiceHttp(playUrl string)  (videoSource string, srt string, err error
 	}
 
 	var respItems []RequestItem
-	err =json.Unmarshal(body, &respItems)
+	err = json.Unmarshal(body, &respItems)
 	if err != nil {
 		return "", "", err
 	}

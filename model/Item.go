@@ -26,6 +26,6 @@ type Item struct {
 	CreatedAt    time.Time     `json:"createdAt" bson:"createdAt"`
 }
 
-func (i *Item) Save() (*Item) {
+func (i *Item) Save() *Item {
 	return i
 }

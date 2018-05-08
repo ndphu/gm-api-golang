@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"github.com/globalsign/mgo/bson"
 	"github.com/globalsign/mgo"
+	"github.com/globalsign/mgo/bson"
 	"github.com/ndphu/gm-api-golang/model"
 )
 
@@ -21,11 +21,11 @@ func EpisodesCollection() *mgo.Collection {
 	return Collection("episodes")
 }
 
-func RemoveEpisodesByItemId(itemId string)  error {
+func RemoveEpisodesByItemId(itemId string) error {
 	return EpisodesCollection().Remove(bson.M{"itemId": itemId})
 }
 
-func SaveEpisode(episode *model.Episode)  error {
+func SaveEpisode(episode *model.Episode) error {
 	return EpisodesCollection().Insert(episode)
 }
 

@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/ndphu/gm-api-golang/dao"
 	"github.com/ndphu/gm-api-golang/service"
 )

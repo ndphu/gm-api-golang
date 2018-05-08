@@ -1,9 +1,9 @@
 package service
 
 import (
+	"github.com/globalsign/mgo/bson"
 	"github.com/ndphu/gm-api-golang/dao"
 	"github.com/ndphu/gm-api-golang/model"
-	"github.com/globalsign/mgo/bson"
 )
 
 func SearchMovies(searchString string, page int, size int) (map[string]interface{}, error) {

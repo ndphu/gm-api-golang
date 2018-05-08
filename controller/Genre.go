@@ -1,10 +1,10 @@
 package controller
 
 import (
-	"github.com/gin-gonic/gin"
 	"fmt"
-	"github.com/ndphu/gm-api-golang/model"
+	"github.com/gin-gonic/gin"
 	"github.com/ndphu/gm-api-golang/dao"
+	"github.com/ndphu/gm-api-golang/model"
 )
 
 func GenresController(g *gin.RouterGroup) {
@@ -13,7 +13,7 @@ func GenresController(g *gin.RouterGroup) {
 		err := dao.Collection("genres").Find(nil).All(&genres)
 		if err == nil {
 			c.JSON(200, gin.H{
-				"docs": genres,
+				"docs":  genres,
 				"total": len(genres),
 			})
 		} else {
