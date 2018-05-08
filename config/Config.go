@@ -1,7 +1,6 @@
 package config
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/url"
 	"os"
@@ -18,10 +17,6 @@ type Config struct {
 	UseCookie             bool
 }
 
-type VcapServices struct {
-	Mlab []MongoDBConfig
-}
-
 type MongoDBCredential struct {
 	Uri string
 }
@@ -31,18 +26,11 @@ type MongoDBConfig struct {
 	Credentials MongoDBCredential
 }
 
-const VCAPSERVICES = "VCAP_SERVICES"
-
 var conf *Config
 
 func init() {
 	conf = &Config{}
-	vcapServices := os.Getenv(VCAPSERVICES)
-	if vcapServices == "" {
-		conf.MongoDBUri = os.Getenv("MONGODB_URI")
-	} else {
-		conf.MongoDBUri = getMongoDBUri(vcapServices)
-	}
+	conf.MongoDBUri = os.Getenv("MONGODB_URI")
 	conf.DBName = getDBName(conf.MongoDBUri)
 
 	conf.GinDebug = os.Getenv("GIN_DEBUG") == "true"
@@ -68,15 +56,6 @@ func init() {
 
 func Get() *Config {
 	return conf
-}
-
-func getMongoDBUri(vcapServicesEnv string) string {
-	vs := VcapServices{}
-	err := json.Unmarshal([]byte(vcapServicesEnv), &vs)
-	if err != nil {
-		panic(err)
-	}
-	return vs.Mlab[0].Credentials.Uri
 }
 
 func getDBName(mongodbUri string) string {
