@@ -104,8 +104,10 @@ func CrawServiceHttp(playUrl string) (videoSource string, srt string, err error)
 	if err != nil {
 		return "", "", err
 	}
-
-	resp, err := http.Post(config.Get().CrawlerServiceBaseUrl+"/api/craw",
+	crawServiceUrl := config.Get().CrawlerServiceBaseUrl + "/api/craw"
+	fmt.Println("calling craw service at " + crawServiceUrl)
+	fmt.Println("body = " + string(jsonBuffer))
+	resp, err := http.Post(crawServiceUrl,
 		"application/json",
 		bytes.NewBuffer(jsonBuffer))
 	if err != nil {

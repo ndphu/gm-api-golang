@@ -22,11 +22,21 @@ func EpisodesCollection() *mgo.Collection {
 }
 
 func RemoveEpisodesByItemId(itemId string) error {
-	return EpisodesCollection().Remove(bson.M{"itemId": itemId})
+	_, err := EpisodesCollection().RemoveAll(bson.M{"itemId": itemId})
+	return err
 }
 
 func SaveEpisode(episode *model.Episode) error {
 	return EpisodesCollection().Insert(episode)
+}
+
+func SaveAllEpisodes(episodes []*model.Episode) error {
+	bulk := EpisodesCollection().Bulk()
+	for _, episode := range episodes {
+		bulk.Insert(episode)
+	}
+	_, err := bulk.Run()
+	return err
 }
 
 func UpdateEpisode(e *model.Episode) error {

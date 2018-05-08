@@ -46,4 +46,26 @@ func ItemController(g *gin.RouterGroup) {
 			}
 		}
 	})
+
+	g.GET("/:id/reloadEpisodeList", func(c *gin.Context) {
+		id := c.Param("id")
+		fmt.Println("reload episodes list for item " + id)
+		item, err := dao.FindItemById(id)
+		if err != nil {
+			c.JSON(500, gin.H{"err": err})
+		} else {
+			fmt.Println(item.Title)
+			item, err = service.ReloadItem(item)
+			if err != nil {
+				c.JSON(500, gin.H{"err": err})
+			} else {
+				items,err := dao.FindEpisodesByItemId(item.Id.Hex())
+				if err != nil {
+					c.JSON(500, gin.H{"err": err})
+				} else {
+					c.JSON(200, items)
+				}
+			}
+		}
+	})
 }

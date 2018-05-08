@@ -15,6 +15,7 @@ type Config struct {
 	CrawlerServiceBaseUrl string
 	GinDebug              bool
 	UseMQTT               bool
+	UseCookie             bool
 }
 
 type VcapServices struct {
@@ -35,40 +36,34 @@ const VCAPSERVICES = "VCAP_SERVICES"
 var conf *Config
 
 func init() {
-	c := Config{}
+	conf = &Config{}
 	vcapServices := os.Getenv(VCAPSERVICES)
 	if vcapServices == "" {
-		c.MongoDBUri = os.Getenv("MONGODB_URI")
+		conf.MongoDBUri = os.Getenv("MONGODB_URI")
 	} else {
-		c.MongoDBUri = getMongoDBUri(vcapServices)
+		conf.MongoDBUri = getMongoDBUri(vcapServices)
 	}
-	c.DBName = getDBName(c.MongoDBUri)
+	conf.DBName = getDBName(conf.MongoDBUri)
 
-	ginDebug := os.Getenv("GIN_DEBUG")
-	if ginDebug == "true" {
-		c.GinDebug = true
-	} else {
-		c.GinDebug = false
-	}
+	conf.GinDebug = os.Getenv("GIN_DEBUG") == "true"
 
-	useMQTT := os.Getenv("USE_MQTT")
-	if useMQTT == "true" {
-		c.UseMQTT = true
+	conf.UseMQTT = os.Getenv("USE_MQTT") == "true"
+	if conf.UseMQTT {
 		broker := os.Getenv("MQTT_BROKER")
 		if broker == "" {
-			c.MQTTBroker = "tcp://iot.eclipse.org:1883"
+			conf.MQTTBroker = "tcp://iot.eclipse.org:1883"
 		} else {
-			c.MQTTBroker = broker
+			conf.MQTTBroker = broker
 		}
 	} else {
-		c.UseMQTT = false
-		c.CrawlerServiceBaseUrl = os.Getenv("CRAW_SERVICE_BASE_URL")
-		if c.CrawlerServiceBaseUrl == "" {
+		conf.CrawlerServiceBaseUrl = os.Getenv("CRAW_SERVICE_BASE_URL")
+		if conf.CrawlerServiceBaseUrl == "" {
 			panic("should set CRAW_SERVICE_BASE_URL")
 		}
-		fmt.Println("using craw service " + c.CrawlerServiceBaseUrl)
+		fmt.Println("using craw service " + conf.CrawlerServiceBaseUrl)
 	}
-	conf = &c
+
+	conf.UseCookie = os.Getenv("USE_COOKIE") == "true"
 }
 
 func Get() *Config {
