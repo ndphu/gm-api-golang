@@ -21,10 +21,11 @@ func SearchSeries(searchString string, page int, size int) (map[string]interface
 }
 
 func SearchActors(searchString string, page int, size int) (map[string]interface{}, error) {
-	query  := dao.ActorsCollection().Find(bson.RegEx{
-		Pattern: ".*" + searchString + ".*",
-		Options: "i",
-	})
+	query := dao.ActorsCollection().Find(bson.M{
+		"title": bson.RegEx{
+			Pattern: ".*" + searchString + ".*",
+			Options: "i",
+		}})
 	total, err := query.Count()
 	if err != nil {
 		return nil, err
