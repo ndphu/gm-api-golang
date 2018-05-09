@@ -36,7 +36,7 @@ func init() {
 	conf.GinDebug = os.Getenv("GIN_DEBUG") == "true"
 
 	conf.UseMQTT = os.Getenv("USE_MQTT") == "true"
-	if conf.UseMQTT {
+	if conf.UseMQTT == true {
 		broker := os.Getenv("MQTT_BROKER")
 		if broker == "" {
 			conf.MQTTBroker = "tcp://iot.eclipse.org:1883"
