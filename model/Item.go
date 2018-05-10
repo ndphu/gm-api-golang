@@ -21,9 +21,18 @@ type Item struct {
 	Hash         string        `json:"hash" bson:"hash"`
 	PlayUrl      string        `json:"playUrl" bson:"playUrl"`
 	Type         string        `json:"type" bson:"type"`
-	ReleaseData  time.Time     `json:"releaseDate" bson:"releaseDate"`
+	ReleaseDate  time.Time     `json:"releaseDate" bson:"releaseDate"`
 	Content      string        `json:"content" bson:"content"`
 	CreatedAt    time.Time     `json:"createdAt" bson:"createdAt"`
+}
+
+type ItemLite struct {
+	Id           bson.ObjectId `json:"_id" bson:"_id"`
+	Title        string        `json:"title" bson:"title"`
+	Poster       string        `json:"poster" bson:"poster"`
+	SubTitle     string        `json:"subTitle" bson:"subTitle"`
+	ReleaseDate  time.Time     `json:"releaseDate" bson:"releaseDate"`
+	Genres       []string      `json:"genres" bson:"genres"`
 }
 
 func (i *Item) Save() *Item {

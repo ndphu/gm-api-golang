@@ -9,7 +9,7 @@ import (
 
 type Section struct {
 	Category model.Genre  `json:"category"`
-	Items    []model.Item `json:"items"`
+	Items    []model.ItemLite `json:"items"`
 }
 
 func HomeController(g *gin.RouterGroup) {
@@ -41,7 +41,6 @@ func HomeController(g *gin.RouterGroup) {
 }
 
 func getLatestMovies() (Section, error) {
-	var items []model.Item
 	items, err := dao.FindLatestMovies()
 	return Section{
 		Category: model.Genre{
@@ -53,7 +52,6 @@ func getLatestMovies() (Section, error) {
 }
 
 func getLatestSeries() (Section, error) {
-	var items []model.Item
 	items, err := dao.FindLatestSeries()
 	return Section{
 		Category: model.Genre{

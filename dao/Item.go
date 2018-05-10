@@ -12,15 +12,15 @@ func FindItemById(id string) (*model.Item, error) {
 	return &item, err
 }
 
-func FindLatestMovies() ([]model.Item, error) {
-	var items []model.Item
-	err := ItemsCollection().Find(bson.M{"type": "MOVIE"}).Sort("-createdAt").Limit(64).All(&items)
+func FindLatestMovies() ([]model.ItemLite, error) {
+	var items []model.ItemLite
+	err := ItemsCollection().Find(bson.M{"type": "MOVIE"}).Sort("-createdAt").Select(itemLiteSelector()).Limit(64).All(&items)
 	return items, err
 }
 
-func FindLatestSeries() ([]model.Item, error) {
-	var items []model.Item
-	err := ItemsCollection().Find(bson.M{"type": "SERIE"}).Sort("-createdAt").Limit(64).All(&items)
+func FindLatestSeries() ([]model.ItemLite, error) {
+	var items []model.ItemLite
+	err := ItemsCollection().Find(bson.M{"type": "SERIE"}).Sort("-createdAt").Select(itemLiteSelector()).Limit(64).All(&items)
 	return items, err
 }
 
@@ -29,10 +29,10 @@ func ItemsCollection() *mgo.Collection {
 }
 
 func FindItemsByGenre(genreTitle string, page int, size int) (bson.M, error) {
-	var items []model.Item
+	var items []model.ItemLite
 	query := ItemsCollection().Find(bson.M{
 		"genres": genreTitle,
-	}).Sort("-createdAt")
+	}).Sort("-createdAt").Select(itemLiteSelector())
 
 	total, err := query.Count()
 	if err != nil {
@@ -49,12 +49,22 @@ func FindItemsByGenre(genreTitle string, page int, size int) (bson.M, error) {
 		"pages": pages,
 	}, nil
 }
+func itemLiteSelector() bson.M {
+	return bson.M{
+		"_id":      1,
+		"title":    1,
+		"subTitle": 1,
+		"genres":   1,
+		"actors":   1,
+		"poster":   1,
+	}
+}
 
 func FindItemsByActor(actorTitle string, page int, size int) (bson.M, error) {
-	var items []model.Item
+	var items []model.ItemLite
 	query := ItemsCollection().Find(bson.M{
 		"actors": actorTitle,
-	}).Sort("-createdAt")
+	}).Sort("-createdAt").Select(itemLiteSelector())
 
 	total, err := query.Count()
 	if err != nil {
