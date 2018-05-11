@@ -13,7 +13,7 @@ func FindEpisodeById(id string) (*model.Episode, error) {
 }
 func FindEpisodesByItemId(itemId string) ([]model.Episode, error) {
 	var episodes []model.Episode
-	err := EpisodesCollection().Find(bson.M{"itemId": itemId}).All(&episodes)
+	err := EpisodesCollection().Find(bson.M{"itemId": itemId}).Sort("order").All(&episodes)
 	return episodes, err
 }
 
